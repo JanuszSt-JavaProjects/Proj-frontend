@@ -16,7 +16,7 @@ import library.backend.library.service.CopyService;
 import java.util.ArrayList;
 import java.util.List;
 
-@Route("")
+@Route
 class App extends VerticalLayout {
 
     public App(BookService bookService, CopyService copyService) {

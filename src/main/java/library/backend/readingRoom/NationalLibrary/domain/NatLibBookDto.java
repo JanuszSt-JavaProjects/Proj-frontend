@@ -12,4 +12,9 @@ public class NatLibBookDto {
     private String title;
     private long id;
 
+
+    @Override
+    public String toString() {
+        return author+"\n"+title+",  id: "+id;
+    }
 }
