@@ -95,5 +95,10 @@ public class BookService {
             throw new NoNeededFieldException();
         }
     }
+
+
+    public List<Book> getByAuthor(String value) {
+        return bookRepository.findByAuthor(value);
+    }
 }
 

@@ -49,17 +49,16 @@ public class ReservationView extends VerticalLayout {
         htmlComponent.setHeight("400px");
 
 
-//dodaję kontekst
-
-confirmationTextArea.setValue(
-        applicationContext.getBean("selectedBook", NatLibBookDto.class).toString());
+        confirmationTextArea.setValue(
+                applicationContext.getBean("selectedBook", NatLibBookDto.class).toString());
 
 
         orderButton.addClickListener(click -> {
-
-            confirmationTextArea.setValue("Your reservation has been confirmed!" +
+            String message = confirmationTextArea.getValue();
+            confirmationTextArea.setValue(message + "\nYour reservation has been confirmed!" +
                     "\nDate: " + datePicker.getValue() +
                     " time: " + hoursGroup.getSelectedItems());
+            orderButton.setVisible(false);
         });
 
 
