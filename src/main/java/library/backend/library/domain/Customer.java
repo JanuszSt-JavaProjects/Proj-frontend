@@ -30,6 +30,6 @@ public class Customer {
 
     @Override
     public String toString() {
-        return "[   " + firstname + "  " + lastname + " " + createAccountDate;
+        return firstname + "  " + lastname;
     }
 }
