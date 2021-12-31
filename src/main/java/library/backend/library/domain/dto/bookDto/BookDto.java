@@ -9,4 +9,14 @@ public class BookDto {
     private String title;
     private String author;
     private int releaseDate;
+
+    @Override
+    public String toString() {
+        return
+                "id: " + id +
+                ", " + title +
+                ", " + author +
+                ", " + releaseDate;
+
+    }
 }

@@ -1,4 +1,4 @@
-package library.frontend.view.admin;
+package library.frontend.view.admin.view;
 
 import com.vaadin.flow.component.Unit;
 import com.vaadin.flow.component.button.Button;

@@ -10,7 +10,7 @@ import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.data.binder.Binder;
 import library.backend.library.domain.Book;
 import library.backend.library.service.BookService;
-import library.frontend.view.admin.AdmBookView;
+import library.frontend.view.admin.view.AdmBookView;
 import org.springframework.context.ApplicationContext;
 
 

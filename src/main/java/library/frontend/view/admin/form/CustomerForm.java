@@ -9,7 +9,7 @@ import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.data.binder.Binder;
 import library.backend.library.domain.Customer;
 import library.backend.library.service.CustomerService;
-import library.frontend.view.admin.AdmCustomView;
+import library.frontend.view.admin.view.AdmCustomView;
 import org.springframework.context.ApplicationContext;
 
 

@@ -1,4 +1,4 @@
-package library.frontend.view.admin;
+package library.frontend.view.admin.view;
 
 import com.vaadin.flow.component.Unit;
 import com.vaadin.flow.component.button.Button;
@@ -7,49 +7,50 @@ import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.router.Route;
-import library.backend.library.domain.Book;
-import library.backend.library.service.BookService;
-import library.frontend.view.admin.form.BookForm;
+import library.backend.library.domain.Copy;
+import library.backend.library.service.CopyService;
 import org.springframework.context.ApplicationContext;
 
-@Route("admin/books")
-
-public class AdmBookView extends VerticalLayout {
+@Route("admin/copies")
+public class AdmCopyView extends VerticalLayout {
 
     ApplicationContext context;
-    Grid<Book> main_Grid = new Grid<>(Book.class);
-    BookService service;
+    Grid<Copy> main_Grid = new Grid<>(Copy.class);
+    CopyService service;
 
+    public AdmCopyView(ApplicationContext context) {
 
-    AdmBookView(ApplicationContext context) {
         this.context = context;
-        BookForm form = new BookForm(this, context);
+//        CopyForm form = new CopyForm(this, context);
 
-        service = context.getBean(BookService.class);
+        service = context.getBean(CopyService.class);
 
         Button button_Exit = new Button("Menu");
         button_Exit.setMinWidth(300, Unit.PIXELS);
         button_Exit.addThemeVariants(ButtonVariant.LUMO_PRIMARY, ButtonVariant.LUMO_SUCCESS);
 
 
-        Button button_addNewPosition = new Button("Add new book");
+        Button button_addNewPosition = new Button("Add new Copy");
         button_addNewPosition.setWidthFull();
         setAlignItems(Alignment.CENTER);
 
-        HorizontalLayout body_Layout = new HorizontalLayout(main_Grid, form);
+        HorizontalLayout body_Layout = new HorizontalLayout(main_Grid/*, form*/);
         body_Layout.setSizeFull();
 
         add(body_Layout, button_addNewPosition, button_Exit);
 
-        main_Grid.setColumns("author", "title", "releaseDate");
+        main_Grid.setColumns("book", "signature", "status");
 
         refresh();
-        main_Grid.asSingleSelect().addValueChangeListener(event -> form.setBook(main_Grid.asSingleSelect().getValue()));
 
-        button_addNewPosition.addClickListener(e -> {
+/*        main_Grid.asSingleSelect().addValueChangeListener(event ->
+                form.setCopy(main_Grid.asSingleSelect().getValue()));*/
+
+
+/*        button_addNewPosition.addClickListener(e -> {
             main_Grid.asSingleSelect().clear();
-            form.setBook(new Book());
-        });
+            form.setCopy(new Copy());
+        });*/
 
         button_Exit.addClickListener(e ->
                 button_Exit.getUI().ifPresent(ui ->
