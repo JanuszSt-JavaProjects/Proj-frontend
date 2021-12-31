@@ -29,7 +29,7 @@ public class Book {
 
     @Override
     public String toString() {
-        return title + ", " +author + ", " + releaseDate;
+        return "id: " +id +", "+title + ", " +author + ", " + releaseDate;
 
     }
 }

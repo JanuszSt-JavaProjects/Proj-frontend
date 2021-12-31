@@ -30,7 +30,7 @@ public class CopyService {
     }
 
     public Copy update(Copy copy) {
-        Copy updatedCopy = copyRepository.findById(copy.getId()).orElseThrow(NoSuchCopyException::new);
+        Copy updatedCopy = copyRepository.findById((long) copy.getId()).orElseThrow(NoSuchCopyException::new);
 
         Optional.ofNullable(copy.getSignature()).ifPresent(updatedCopy::setSignature);
         Optional.ofNullable(copy.getStatus()).ifPresent(updatedCopy::setStatus);

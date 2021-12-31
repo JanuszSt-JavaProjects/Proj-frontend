@@ -17,7 +17,7 @@ public class CopyMapper {
     public Copy mapCopyDtoToCopy(CopyDto copyDto) {
         Copy copy = new Copy();
 
-        copy.setId(copyDto.getId());
+        copy.setId((int) copyDto.getId());
         copy.setSignature(copyDto.getSignature());
         copy.setStatus(copyDto.getStatus());
         return copy;

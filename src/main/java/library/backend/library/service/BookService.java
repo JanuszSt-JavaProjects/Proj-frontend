@@ -38,7 +38,7 @@ public class BookService {
     }
 
     public Book update(Book book) {
-        Book updatedBook = bookRepository.findById(book.getId()).orElseThrow(NoSuchBookException::new);
+        Book updatedBook = bookRepository.findById((long) book.getId()).orElseThrow(NoSuchBookException::new);
 
         updatedBook.setId(book.getId());
         updatedBook.setTitle(book.getTitle());

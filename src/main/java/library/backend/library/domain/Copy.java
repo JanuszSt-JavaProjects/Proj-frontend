@@ -27,10 +27,10 @@ public class Copy {
     private Book book;
 
 
-//    @Override
-//    public  String toString(){
-//        return "<id: "+id+", "+signature+", "+status+">";
-//    }
+    @Override
+    public  String toString(){
+        return "<copy_id: "+id+", "+signature+", "+status+">";
+    }
 }
 
 

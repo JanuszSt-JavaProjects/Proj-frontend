@@ -20,9 +20,9 @@ public class BookForm extends FormLayout {
     ApplicationContext context;
     BookService bookService;
 
-    private  TextField title = new TextField("Title");
-    TextField author = new TextField("Author");
-    IntegerField releaseDate = new IntegerField("Release year");
+    private TextField title = new TextField("Title");
+    private TextField author = new TextField("Author");
+    private IntegerField releaseDate = new IntegerField("Release year");
 
     private final Button add = new Button("Add");
 

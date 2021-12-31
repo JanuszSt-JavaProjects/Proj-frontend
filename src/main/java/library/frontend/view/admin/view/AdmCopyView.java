@@ -9,6 +9,7 @@ import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.router.Route;
 import library.backend.library.domain.Copy;
 import library.backend.library.service.CopyService;
+import library.frontend.view.admin.form.CopyForm;
 import org.springframework.context.ApplicationContext;
 
 @Route("admin/copies")
@@ -21,7 +22,7 @@ public class AdmCopyView extends VerticalLayout {
     public AdmCopyView(ApplicationContext context) {
 
         this.context = context;
-//        CopyForm form = new CopyForm(this, context);
+        CopyForm form = new CopyForm(this, context);
 
         service = context.getBean(CopyService.class);
 
@@ -34,23 +35,31 @@ public class AdmCopyView extends VerticalLayout {
         button_addNewPosition.setWidthFull();
         setAlignItems(Alignment.CENTER);
 
-        HorizontalLayout body_Layout = new HorizontalLayout(main_Grid/*, form*/);
+        HorizontalLayout body_Layout = new HorizontalLayout(main_Grid, form);
         body_Layout.setSizeFull();
 
         add(body_Layout, button_addNewPosition, button_Exit);
 
-        main_Grid.setColumns("book", "signature", "status");
+        main_Grid.setColumns("book.id","book", "signature", "status");
 
         refresh();
+        main_Grid.getColumns().forEach(col -> col.setAutoWidth(true));
 
-/*        main_Grid.asSingleSelect().addValueChangeListener(event ->
-                form.setCopy(main_Grid.asSingleSelect().getValue()));*/
+        main_Grid.asSingleSelect().addValueChangeListener(event ->
+                form.setCopy(main_Grid.asSingleSelect().getValue()));
 
 
-/*        button_addNewPosition.addClickListener(e -> {
-            main_Grid.asSingleSelect().clear();
-            form.setCopy(new Copy());
-        });*/
+
+        button_addNewPosition.addClickListener(e -> {
+
+            Copy copy = main_Grid.asSingleSelect().getValue();
+            Copy newCopy = new Copy();
+
+            newCopy.setBook(copy.getBook());
+            newCopy.setSignature("");
+
+            form.setCopy(newCopy);
+        });
 
         button_Exit.addClickListener(e ->
                 button_Exit.getUI().ifPresent(ui ->
@@ -60,6 +69,8 @@ public class AdmCopyView extends VerticalLayout {
     }
 
     public void refresh() {
+
         main_Grid.setItems(service.getAll());
+
     }
 }

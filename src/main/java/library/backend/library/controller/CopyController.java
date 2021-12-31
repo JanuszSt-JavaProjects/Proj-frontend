@@ -52,7 +52,7 @@ public class CopyController {
     }
 
     @DeleteMapping("/{id}")
-    public void remove(@PathVariable long id) {
+    public void remove(@PathVariable int id) {
         copyService.delete(id);
     }
 
