@@ -5,7 +5,7 @@ import library.backend.library.exception.clientException.NoSuchClientException;
 import library.backend.library.exception.copyException.NoAvailableCopyException;
 import library.backend.library.exception.copyException.NoSuchCopyException;
 import library.backend.library.repository.BorrowRepository;
-import library.backend.library.repository.ClientRepository;
+import library.backend.library.repository.CustomerRepository;
 import library.backend.library.repository.CopyRepository;
 import library.backend.library.domain.dto.borrowDto.BorrowReturnDto;
 import library.backend.library.exception.bookException.NoSuchBookException;
@@ -22,16 +22,16 @@ public class BorrowService {
 
     BorrowRepository borrowRepository;
     BookRepository bookRepository;
-    ClientRepository clientRepository;
+    CustomerRepository customerRepository;
     CopyRepository copyRepository;
 
     public BorrowService(BorrowRepository borrowRepository,
                          BookRepository bookRepository,
-                         ClientRepository clientRepository,
+                         CustomerRepository customerRepository,
                          CopyRepository copyRepository) {
         this.borrowRepository = borrowRepository;
         this.bookRepository = bookRepository;
-        this.clientRepository = clientRepository;
+        this.customerRepository = customerRepository;
         this.copyRepository = copyRepository;
     }
 
@@ -39,7 +39,7 @@ public class BorrowService {
     public Borrow save(Borrow borrow) {
 
         Book book = bookRepository.findById(borrow.getBookId()).orElseThrow(NoSuchBookException::new);
-        Customer customer = clientRepository.findById(borrow.getCustomer().getId()).orElseThrow(NoSuchClientException::new);
+        Customer customer = customerRepository.findById(borrow.getCustomer().getId()).orElseThrow(NoSuchClientException::new);
 
         long bookId = book.getId();
         Copy availableCopy = getFirstAvailableCopy(book);

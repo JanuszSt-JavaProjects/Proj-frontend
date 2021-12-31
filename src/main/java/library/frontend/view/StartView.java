@@ -22,19 +22,17 @@ public class StartView extends VerticalLayout {
         readersBtn.setMinWidth(300, Unit.PIXELS);
 
 
-
-
         libraryBtn.addClickListener(e ->
                 libraryBtn.getUI().ifPresent(ui ->
-                        ui.navigate("library")));
-
-                readersBtn.addClickListener(e ->
-                readersBtn.getUI().ifPresent(ui ->
-                        ui.navigate("readers"))
-
-
+                        ui.navigate("library")
+                )
         );
 
+        readersBtn.addClickListener(e ->
+                readersBtn.getUI().ifPresent(ui ->
+                        ui.navigate("readers")
+                )
+        );
 
 
         add(libraryBtn, readersBtn);

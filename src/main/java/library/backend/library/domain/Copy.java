@@ -26,6 +26,7 @@ public class Copy {
     @JsonBackReference
     private Book book;
 
+
     @Override
     public  String toString(){
         return "<id: "+id+", "+signature+", "+status+">";

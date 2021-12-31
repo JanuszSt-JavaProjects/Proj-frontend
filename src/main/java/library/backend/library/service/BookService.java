@@ -1,10 +1,10 @@
 package library.backend.library.service;
 
-import library.backend.library.domain.Copy;
-import library.backend.library.exception.bookException.NoNeededFieldException;
 import library.backend.library.domain.Book;
+import library.backend.library.domain.Copy;
 import library.backend.library.domain.dto.bookDto.BookCreateDto;
 import library.backend.library.exception.bookException.BookAlreadyExistsException;
+import library.backend.library.exception.bookException.NoNeededFieldException;
 import library.backend.library.exception.bookException.NoSuchBookException;
 import library.backend.library.repository.BookRepository;
 import org.springframework.stereotype.Service;
@@ -18,19 +18,16 @@ public class BookService {
     BookRepository bookRepository;
     CopyService copyService;
 
-    public BookService(BookRepository bookRepository, CopyService copyService) {
+    public BookService(BookRepository bookRepository) {
         this.bookRepository = bookRepository;
-        this.copyService = copyService;
     }
 
-    public Book save(Book book, Copy copy) {
+    public Book save(Book book) {
         if (checkIfExists(book)) {
             throw new BookAlreadyExistsException();
         }
 
         Book bookToSave = bookRepository.save(book);
-        copy.setBook(bookToSave);
-        copyService.save(copy);
 
         return bookToSave;
     }

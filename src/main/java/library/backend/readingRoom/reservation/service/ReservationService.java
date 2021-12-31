@@ -1,7 +1,7 @@
 package library.backend.readingRoom.reservation.service;
 
 
-import library.backend.library.service.ClientService;
+import library.backend.library.service.CustomerService;
 import library.backend.readingRoom.reservation.domain.Reservation;
 import library.backend.readingRoom.reservation.exception.NoRequiredInformation;
 import library.backend.readingRoom.reservation.exception.NoSuchReservationException;
@@ -14,12 +14,12 @@ import java.util.Optional;
 @Service
 public class ReservationService {
     ReservationRepository reservationRepo;
-    ClientService clientService;
+    CustomerService customerService;
 
     public ReservationService(ReservationRepository reservationRepo,
-                              ClientService clientService) {
+                              CustomerService customerService) {
         this.reservationRepo = reservationRepo;
-        this.clientService = clientService;
+        this.customerService = customerService;
     }
 
     public Reservation save(Reservation reservation) {
@@ -46,7 +46,7 @@ public class ReservationService {
     }
 
     public Iterable<Reservation> getAllForClient(long clientId) {
-        clientService.getOne(clientId);
+        customerService.getOne(clientId);
         return reservationRepo.findAllByClientId(clientId);
     }
 

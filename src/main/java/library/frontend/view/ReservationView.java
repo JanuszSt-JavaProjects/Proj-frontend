@@ -59,6 +59,7 @@ public class ReservationView extends VerticalLayout {
                     "\nDate: " + datePicker.getValue() +
                     " time: " + hoursGroup.getSelectedItems());
             orderButton.setVisible(false);
+            confirmationTextArea.setEnabled(false);
         });
 
 

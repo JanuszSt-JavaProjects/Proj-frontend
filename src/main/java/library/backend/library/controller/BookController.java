@@ -1,13 +1,12 @@
 package library.backend.library.controller;
 
 
-import library.backend.library.domain.Copy;
+import library.backend.library.domain.Book;
 import library.backend.library.domain.dto.bookDto.BookCreateDto;
 import library.backend.library.domain.dto.bookDto.BookDto;
 import library.backend.library.mapper.BookMapper;
-import library.backend.library.service.BookService;
-import library.backend.library.domain.Book;
 import library.backend.library.mapper.CopyMapper;
+import library.backend.library.service.BookService;
 import library.backend.library.service.CopyService;
 import org.springframework.web.bind.annotation.*;
 
@@ -20,8 +19,6 @@ public class BookController {
 
     BookMapper bookMapper;
     BookService bookService;
-    CopyService copyService;
-    CopyMapper copyMapper;
 
     public BookController(BookMapper bookMapper,
                           BookService bookService,
@@ -29,17 +26,14 @@ public class BookController {
                           CopyMapper copyMapper) {
         this.bookMapper = bookMapper;
         this.bookService = bookService;
-        this.copyService = copyService;
-        this.copyMapper = copyMapper;
     }
 
     @PostMapping
     public BookDto create(@RequestBody BookCreateDto bookCreateDto) {
         bookService.checkIfComplete(bookCreateDto);
         Book book = bookService.extractBook(bookCreateDto);
-        Copy copy = bookService.extractCopy(bookCreateDto);
 
-        return bookMapper.mapBookToBookDto(bookService.save(book, copy));
+        return bookMapper.mapBookToBookDto(bookService.save(book));
 
     }
 
