@@ -19,7 +19,7 @@ public class AdmBookView extends VerticalLayout {
     Grid<Book> main_Grid = new Grid<>(Book.class);
     BookService service;
 
-    AdmBookView(ApplicationContext context) {
+    public AdmBookView(ApplicationContext context) {
 
         this.context = context;
         BookForm form = new BookForm(this, context);
@@ -47,7 +47,6 @@ public class AdmBookView extends VerticalLayout {
 
         refresh();
         main_Grid.getColumns().forEach(col -> col.setAutoWidth(true));
-
 
 
         main_Grid.asSingleSelect().addValueChangeListener(event ->

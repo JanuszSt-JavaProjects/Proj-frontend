@@ -15,14 +15,15 @@ import org.springframework.context.ApplicationContext;
 
 @Route("admin/customers")
 
-public class AdmCustomView extends VerticalLayout {
+public class AdmCustomerView extends VerticalLayout {
 
     ApplicationContext context;
     Grid<Customer> main_Grid = new Grid<>(Customer.class);
     CustomerService service;
 
 
-    public AdmCustomView(ApplicationContext context) {
+    public AdmCustomerView(ApplicationContext context) {
+
         this.context = context;
         CustomerForm form = new CustomerForm(this, context);
 
@@ -40,36 +41,30 @@ public class AdmCustomView extends VerticalLayout {
         HorizontalLayout body_Layout = new HorizontalLayout(main_Grid, form);
         body_Layout.setSizeFull();
 
-        Button button_modifyPosition = new Button("Modify selected");
-        button_modifyPosition.setWidthFull();
+
         setAlignItems(Alignment.CENTER);
-        HorizontalLayout down_Layout = new HorizontalLayout(button_addNewPosition, button_modifyPosition);
+        HorizontalLayout down_Layout = new HorizontalLayout(button_addNewPosition);
         down_Layout.setSizeFull();
 
         add(body_Layout, down_Layout, button_Exit);
-
         main_Grid.setColumns("firstname", "lastname", "createAccountDate");
 
         refresh();
+        main_Grid.getColumns().forEach(col -> col.setAutoWidth(true));
+
 
         main_Grid.asSingleSelect().addValueChangeListener(event ->
                 {
                     form.setCustomer(main_Grid.asSingleSelect().getValue());
-                    form.setSaveDisable();
+                    form.setUpdateAction();
                 }
         );
-
-
-        button_modifyPosition.addClickListener(click ->
-                form.setSaveEnable()
-        );
-
 
         button_addNewPosition.addClickListener(e -> {
 
             main_Grid.asSingleSelect().clear();
             form.setCustomer(new Customer());
-            form.setSaveEnable();
+            form.setSaveAction();
         });
 
 
