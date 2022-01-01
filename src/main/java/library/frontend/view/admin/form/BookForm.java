@@ -24,8 +24,12 @@ public class BookForm extends FormLayout {
     private TextField author = new TextField("Author");
     private IntegerField releaseDate = new IntegerField("Release year");
 
-    private final Button add = new Button("Add");
 
+    Button save = new Button("Save");
+    Button delete = new Button("Delete");
+    Button modify = new Button("Modify");
+
+    HorizontalLayout buttons = new HorizontalLayout(modify, save, delete);
 
     private final Binder<Book> binder = new Binder<>(Book.class);
 
@@ -35,27 +39,44 @@ public class BookForm extends FormLayout {
         this.context = context;
         bookService = context.getBean(BookService.class);
 
-
-        Button save = new Button("Save");
-        Button delete = new Button("Delete");
-        HorizontalLayout buttons = new HorizontalLayout(save, delete);
         save.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
-
+        save.setVisible(false);
+        modify.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
+        modify.setVisible(false);
 
         binder.bindInstanceFields(this);
 
+
+        save.addClickListener(click -> save());
+        modify.addClickListener(click -> update());
+        delete.addClickListener(click -> delete());
 
         VerticalLayout layout_Right =
                 new VerticalLayout(title, author, releaseDate, buttons);
 
         add(layout_Right);
+    }
 
-        save.addClickListener(event -> save());
-        delete.addClickListener(event -> delete());
+
+    public void setSaveAction() {
+        setEnabled(true);
+        setBook(new Book());
+        modify.setVisible(false);
+        save.setVisible(true);
+        save.setEnabled(true);
 
     }
 
+    public void setUpdateAction() {
+        setEnabled(true);
+        save.setVisible(false);
+        modify.setVisible(true);
+
+    }
+
+
     public void setBook(Book book) {
+
         binder.setBean(book);
 
         if (book == null) {
@@ -68,20 +89,35 @@ public class BookForm extends FormLayout {
 
 
     private void save() {
+
         Book book = binder.getBean();
-
         bookService.save(book);
-
-
         admBookView.refresh();
         setBook(book);
+        setDisable();
+
     }
+
+    private void update() {
+
+        Book book = binder.getBean();
+        bookService.update(book);
+        admBookView.refresh();
+        setBook(book);
+        setDisable();
+    }
+
 
     private void delete() {
         Book book = binder.getBean();
         bookService.delete(book.getId());
         admBookView.refresh();
         setBook(book);
+    }
+
+    void setDisable(){
+        setEnabled(false);
+
     }
 
 }

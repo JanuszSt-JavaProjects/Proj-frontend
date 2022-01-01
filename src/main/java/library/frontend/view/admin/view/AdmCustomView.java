@@ -40,26 +40,47 @@ public class AdmCustomView extends VerticalLayout {
         HorizontalLayout body_Layout = new HorizontalLayout(main_Grid, form);
         body_Layout.setSizeFull();
 
-        add(body_Layout, button_addNewPosition, button_Exit);
+        Button button_modifyPosition = new Button("Modify selected");
+        button_modifyPosition.setWidthFull();
+        setAlignItems(Alignment.CENTER);
+        HorizontalLayout down_Layout = new HorizontalLayout(button_addNewPosition, button_modifyPosition);
+        down_Layout.setSizeFull();
+
+        add(body_Layout, down_Layout, button_Exit);
 
         main_Grid.setColumns("firstname", "lastname", "createAccountDate");
 
         refresh();
 
-        main_Grid.asSingleSelect().addValueChangeListener(event -> form.setCustomer(main_Grid.asSingleSelect().getValue()));
+        main_Grid.asSingleSelect().addValueChangeListener(event ->
+                {
+                    form.setCustomer(main_Grid.asSingleSelect().getValue());
+                    form.setSaveDisable();
+                }
+        );
+
+
+        button_modifyPosition.addClickListener(click ->
+                form.setSaveEnable()
+        );
 
 
         button_addNewPosition.addClickListener(e -> {
+
             main_Grid.asSingleSelect().clear();
             form.setCustomer(new Customer());
+            form.setSaveEnable();
         });
+
 
         button_Exit.addClickListener(e ->
                 button_Exit.getUI().ifPresent(ui ->
                         ui.navigate("admin")
                 )
         );
+        ;
     }
+
 
     public void refresh() {
         main_Grid.setItems(service.getAll());

@@ -26,7 +26,9 @@ public class CopyForm extends FormLayout {
     private TextField signature = new TextField("signature");
     ComboBox<Status> status = new ComboBox<>("Status");
 
-
+    Button save = new Button("Save");
+    Button delete = new Button("Delete");
+    HorizontalLayout buttons = new HorizontalLayout(save, delete);
     private final Button add = new Button("Add");
 
 
@@ -40,9 +42,7 @@ public class CopyForm extends FormLayout {
 
         status.setItems(Status.AVAILABLE,Status.IN_USE,Status.DESTROYED,Status.LOST);
 
-        Button save = new Button("Save");
-        Button delete = new Button("Delete");
-        HorizontalLayout buttons = new HorizontalLayout(save, delete);
+
         save.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
 
 
@@ -58,7 +58,17 @@ public class CopyForm extends FormLayout {
 
         save.addClickListener(event -> save());
         delete.addClickListener(event -> delete());
+    }
 
+
+
+
+    public void setSaveEnable() {
+        save.setEnabled(true);
+    }
+
+    public void setSaveDisable() {
+        save.setEnabled(false);
     }
 
     public void setCopy(Copy copy) {
@@ -78,6 +88,8 @@ public class CopyForm extends FormLayout {
         service.save(copy);
         admCopyView.refresh();
         setCopy(copy);
+        save.setEnabled(false);
+
     }
 
     private void delete() {

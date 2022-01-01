@@ -7,36 +7,39 @@ import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.router.Route;
-import library.backend.library.domain.Copy;
-import library.backend.library.service.CopyService;
-import library.frontend.view.admin.form.CopyForm;
+import library.backend.library.domain.Borrow;
+import library.backend.library.service.BorrowService;
+import library.frontend.view.admin.form.BorrowForm;
 import org.springframework.context.ApplicationContext;
 
-@Route("admin/copies")
-public class AdmCopyView extends VerticalLayout {
+import java.time.LocalDate;
+
+
+@Route("admin/borrows")
+public class AdmBorrowView extends VerticalLayout {
 
     ApplicationContext context;
-    Grid<Copy> main_Grid = new Grid<>(Copy.class);
-    CopyService service;
+    Grid<Borrow> main_Grid = new Grid<>(Borrow.class);
+    BorrowService service;
 
-    public AdmCopyView(ApplicationContext context) {
+    public AdmBorrowView(ApplicationContext context) {
 
         this.context = context;
-        CopyForm form = new CopyForm(this, context);
+        BorrowForm form = new BorrowForm(this, context);
 
-        service = context.getBean(CopyService.class);
+        service = context.getBean(BorrowService.class);
 
         Button button_Exit = new Button("Menu");
         button_Exit.setMinWidth(300, Unit.PIXELS);
         button_Exit.addThemeVariants(ButtonVariant.LUMO_PRIMARY, ButtonVariant.LUMO_SUCCESS);
 
 
-        Button button_addNewPosition = new Button("Add new Copy");
-        button_addNewPosition.setWidthFull();
-        setAlignItems(Alignment.CENTER);
-
         HorizontalLayout body_Layout = new HorizontalLayout(main_Grid, form);
         body_Layout.setSizeFull();
+
+        Button button_addNewPosition = new Button("Add new Borrow");
+        button_addNewPosition.setWidthFull();
+        setAlignItems(Alignment.CENTER);
 
         Button button_modifyPosition = new Button("Modify selected");
         button_modifyPosition.setWidthFull();
@@ -45,18 +48,18 @@ public class AdmCopyView extends VerticalLayout {
         down_Layout.setSizeFull();
 
         add(body_Layout, down_Layout, button_Exit);
-        main_Grid.setColumns("book.id", "book", "signature", "status");
+
+        main_Grid.setColumns("customer.firstname", "customer.lastname", "bookId", "copyId", "borrowDate", "returnDate");
+
 
         refresh();
         main_Grid.getColumns().forEach(col -> col.setAutoWidth(true));
 
         main_Grid.asSingleSelect().addValueChangeListener(event ->
-                {
-                    form.setCopy(main_Grid.asSingleSelect().getValue());
-                    form.setSaveDisable();
-                }
-        );
-
+        {
+            form.setBorrow(main_Grid.asSingleSelect().getValue());
+            form.setSaveDisable();
+        });
 
         button_modifyPosition.addClickListener(click ->
                 form.setSaveEnable()
@@ -64,15 +67,13 @@ public class AdmCopyView extends VerticalLayout {
 
 
         button_addNewPosition.addClickListener(e -> {
-            Copy copy = main_Grid.asSingleSelect().getValue();
-            Copy newCopy = new Copy();
 
-            newCopy.setBook(copy.getBook());
-            newCopy.setSignature("");
-
-            form.setCopy(newCopy);
+            Borrow borrow = new Borrow();
+            borrow.setBorrowDate(LocalDate.MIN);
+            form.setBorrow(borrow);
             form.setSaveEnable();
         });
+
 
         button_Exit.addClickListener(e ->
                 button_Exit.getUI().ifPresent(ui ->

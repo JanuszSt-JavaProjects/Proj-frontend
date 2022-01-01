@@ -23,6 +23,9 @@ public class CustomerForm extends FormLayout {
     private TextField firstname = new TextField("Firstname");
     private TextField lastname = new TextField("Lastname");
 
+    Button save = new Button("Save");
+    Button delete = new Button("Delete");
+    HorizontalLayout buttons = new HorizontalLayout(save, delete);
     private final Button add = new Button("Add");
 
 
@@ -34,13 +37,7 @@ public class CustomerForm extends FormLayout {
         this.context = context;
         service = context.getBean(CustomerService.class);
 
-
-        Button save = new Button("Save");
-        Button delete = new Button("Delete");
-        HorizontalLayout buttons = new HorizontalLayout(save, delete);
         save.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
-
-
         binder.bindInstanceFields(this);
 
 
@@ -49,10 +46,20 @@ public class CustomerForm extends FormLayout {
 
         add(layout_Right);
 
+        save.setEnabled(false);
         save.addClickListener(event -> save());
         delete.addClickListener(event -> delete());
-
     }
+
+
+    public void setSaveEnable() {
+        save.setEnabled(true);
+    }
+
+    public void setSaveDisable() {
+        save.setEnabled(false);
+    }
+
 
     public void setCustomer(Customer customer) {
         binder.setBean(customer);
@@ -70,10 +77,9 @@ public class CustomerForm extends FormLayout {
         Customer customer = binder.getBean();
 
         service.save(customer);
-
-
         admCustomView.refresh();
         setCustomer(customer);
+        save.setEnabled(false);
     }
 
     private void delete() {

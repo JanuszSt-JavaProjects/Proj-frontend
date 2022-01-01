@@ -39,17 +39,29 @@ public class AdmBookView extends VerticalLayout {
         HorizontalLayout body_Layout = new HorizontalLayout(main_Grid, form);
         body_Layout.setSizeFull();
 
-        add(body_Layout, button_addNewPosition, button_Exit);
+
+        setAlignItems(Alignment.CENTER);
+        HorizontalLayout down_Layout = new HorizontalLayout(button_addNewPosition);
+        down_Layout.setSizeFull();
+
+        add(body_Layout, down_Layout, button_Exit);
 
         main_Grid.setColumns("author", "title", "releaseDate");
 
         refresh();
-        main_Grid.asSingleSelect().addValueChangeListener(event -> form.setBook(main_Grid.asSingleSelect().getValue()));
+
+        main_Grid.asSingleSelect().addValueChangeListener(event ->
+        {
+            form.setBook(main_Grid.asSingleSelect().getValue());
+            form.setUpdateAction();
+        });
+
 
         button_addNewPosition.addClickListener(e -> {
             main_Grid.asSingleSelect().clear();
-            form.setBook(new Book());
+            form.setSaveAction();
         });
+
 
         button_Exit.addClickListener(e ->
                 button_Exit.getUI().ifPresent(ui ->
