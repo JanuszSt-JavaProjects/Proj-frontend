@@ -71,6 +71,7 @@ public class BorrowService {
     }
 
     public Borrow update(Borrow borrow) {
+        System.out.println("******************* z servisu : \n"+borrow);
         borrowRepository.findById(borrow.getId()).orElseThrow(NoSuchBorrowException::new);
         return borrowRepository.save(borrow);
     }

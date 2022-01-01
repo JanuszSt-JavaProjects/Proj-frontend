@@ -18,7 +18,7 @@ public class BookForm extends FormLayout {
 
     AdmBookView admBookView;
     ApplicationContext context;
-    BookService bookService;
+    BookService service;
 
     private TextField title = new TextField("Title");
     private TextField author = new TextField("Author");
@@ -37,7 +37,7 @@ public class BookForm extends FormLayout {
     public BookForm(AdmBookView admBookView, ApplicationContext context) {
         this.admBookView = admBookView;
         this.context = context;
-        bookService = context.getBean(BookService.class);
+        service = context.getBean(BookService.class);
 
         save.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
         save.setVisible(false);
@@ -64,14 +64,12 @@ public class BookForm extends FormLayout {
         modify.setVisible(false);
         save.setVisible(true);
         save.setEnabled(true);
-
     }
 
     public void setUpdateAction() {
         setEnabled(true);
         save.setVisible(false);
         modify.setVisible(true);
-
     }
 
 
@@ -91,7 +89,7 @@ public class BookForm extends FormLayout {
     private void save() {
 
         Book book = binder.getBean();
-        bookService.save(book);
+        service.save(book);
         admBookView.refresh();
         setBook(book);
         setDisable();
@@ -101,7 +99,7 @@ public class BookForm extends FormLayout {
     private void update() {
 
         Book book = binder.getBean();
-        bookService.update(book);
+        service.update(book);
         admBookView.refresh();
         setBook(book);
         setDisable();
@@ -110,14 +108,14 @@ public class BookForm extends FormLayout {
 
     private void delete() {
         Book book = binder.getBean();
-        bookService.delete(book.getId());
+        service.delete(book.getId());
         admBookView.refresh();
         setBook(book);
+        setDisable();
     }
 
     void setDisable(){
         setEnabled(false);
-
     }
 
 }

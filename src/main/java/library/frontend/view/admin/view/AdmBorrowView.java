@@ -12,8 +12,6 @@ import library.backend.library.service.BorrowService;
 import library.frontend.view.admin.form.BorrowForm;
 import org.springframework.context.ApplicationContext;
 
-import java.time.LocalDate;
-
 
 @Route("admin/borrows")
 public class AdmBorrowView extends VerticalLayout {
@@ -33,45 +31,42 @@ public class AdmBorrowView extends VerticalLayout {
         button_Exit.setMinWidth(300, Unit.PIXELS);
         button_Exit.addThemeVariants(ButtonVariant.LUMO_PRIMARY, ButtonVariant.LUMO_SUCCESS);
 
-
-        HorizontalLayout body_Layout = new HorizontalLayout(main_Grid, form);
-        body_Layout.setSizeFull();
-
         Button button_addNewPosition = new Button("Add new Borrow");
         button_addNewPosition.setWidthFull();
         setAlignItems(Alignment.CENTER);
 
-        Button button_modifyPosition = new Button("Modify selected");
-        button_modifyPosition.setWidthFull();
+        HorizontalLayout body_Layout = new HorizontalLayout(main_Grid, form);
+        body_Layout.setSizeFull();
+
+
         setAlignItems(Alignment.CENTER);
-        HorizontalLayout down_Layout = new HorizontalLayout(button_addNewPosition, button_modifyPosition);
+        HorizontalLayout down_Layout = new HorizontalLayout(button_addNewPosition);
         down_Layout.setSizeFull();
 
         add(body_Layout, down_Layout, button_Exit);
 
         main_Grid.setColumns("customer.firstname", "customer.lastname", "bookId", "copyId", "borrowDate", "returnDate");
 
-
         refresh();
         main_Grid.getColumns().forEach(col -> col.setAutoWidth(true));
 
+
+
+
         main_Grid.asSingleSelect().addValueChangeListener(event ->
         {
-            form.setBorrow(main_Grid.asSingleSelect().getValue());
-            form.setSaveDisable();
-        });
 
-        button_modifyPosition.addClickListener(click ->
-                form.setSaveEnable()
-        );
+            Borrow borrow = main_Grid.asSingleSelect().getValue();
+            form.setBorrow(borrow);
+            form.setUpdateAction();
+        });
 
 
         button_addNewPosition.addClickListener(e -> {
 
-            Borrow borrow = new Borrow();
-            borrow.setBorrowDate(LocalDate.MIN);
-            form.setBorrow(borrow);
-            form.setSaveEnable();
+            form.setSaveAction();
+            main_Grid.asSingleSelect().clear();
+
         });
 
 

@@ -13,15 +13,14 @@ import library.frontend.view.admin.form.BookForm;
 import org.springframework.context.ApplicationContext;
 
 @Route("admin/books")
-
 public class AdmBookView extends VerticalLayout {
 
     ApplicationContext context;
     Grid<Book> main_Grid = new Grid<>(Book.class);
     BookService service;
 
-
     AdmBookView(ApplicationContext context) {
+
         this.context = context;
         BookForm form = new BookForm(this, context);
 
@@ -30,7 +29,6 @@ public class AdmBookView extends VerticalLayout {
         Button button_Exit = new Button("Menu");
         button_Exit.setMinWidth(300, Unit.PIXELS);
         button_Exit.addThemeVariants(ButtonVariant.LUMO_PRIMARY, ButtonVariant.LUMO_SUCCESS);
-
 
         Button button_addNewPosition = new Button("Add new book");
         button_addNewPosition.setWidthFull();
@@ -49,6 +47,9 @@ public class AdmBookView extends VerticalLayout {
         main_Grid.setColumns("author", "title", "releaseDate");
 
         refresh();
+        main_Grid.getColumns().forEach(col -> col.setAutoWidth(true));
+
+
 
         main_Grid.asSingleSelect().addValueChangeListener(event ->
         {
