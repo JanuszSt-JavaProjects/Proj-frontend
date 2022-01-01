@@ -2,6 +2,7 @@ package library.frontend.view;
 
 import com.vaadin.flow.component.Unit;
 import com.vaadin.flow.component.button.Button;
+import com.vaadin.flow.component.button.ButtonVariant;
 import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
@@ -35,6 +36,9 @@ public class ReaderView extends VerticalLayout {
         TextArea textArea = new TextArea();
         Button schedule_Button = new Button("Set Your Schedule!");
 
+        Button button_Exit = new Button("<-- Menu");
+        button_Exit.setMinWidth(300, Unit.PIXELS);
+        button_Exit.addThemeVariants(ButtonVariant.LUMO_PRIMARY, ButtonVariant.LUMO_SUCCESS);
 
         Grid<NatLibBookDto> natLibBookDtoGrid = new Grid<>(NatLibBookDto.class);
         natLibBookDtoGrid.setColumns("id", "author", "title");
@@ -70,10 +74,6 @@ public class ReaderView extends VerticalLayout {
 
             NatLibBookDto selectedBook = event.getValue();
             textArea.setValue(showBook(selectedBook).toString());
-
-            System.out.println(selectedBook.getAuthor());
-            System.out.println(selectedBook.getTitle());
-            System.out.println(selectedBook.getId());
         });
 
 
@@ -85,8 +85,19 @@ public class ReaderView extends VerticalLayout {
                 schedule_Button.getUI().ifPresent(ui ->
                         ui.navigate("reservation")));
 
+        button_Exit.addClickListener(e ->
+                button_Exit.getUI().ifPresent(ui ->
+                        ui.navigate("")
+                )
+        );
+
+        VerticalLayout foot_Layout = new VerticalLayout(button_Exit);
+        foot_Layout.setSizeFull();
+        foot_Layout.setAlignItems(Alignment.CENTER);
+
         add(top_Bar,
-                books);
+                books,
+                foot_Layout);
     }
 
 
