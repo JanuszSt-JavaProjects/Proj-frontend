@@ -38,10 +38,9 @@ public class AdmCopyView extends VerticalLayout {
         HorizontalLayout body_Layout = new HorizontalLayout(main_Grid, form);
         body_Layout.setSizeFull();
 
-        Button button_modifyPosition = new Button("Modify selected");
-        button_modifyPosition.setWidthFull();
+
         setAlignItems(Alignment.CENTER);
-        HorizontalLayout down_Layout = new HorizontalLayout(button_addNewPosition, button_modifyPosition);
+        HorizontalLayout down_Layout = new HorizontalLayout(button_addNewPosition);
         down_Layout.setSizeFull();
 
         add(body_Layout, down_Layout, button_Exit);
@@ -53,25 +52,13 @@ public class AdmCopyView extends VerticalLayout {
         main_Grid.asSingleSelect().addValueChangeListener(event ->
                 {
                     form.setCopy(main_Grid.asSingleSelect().getValue());
-                    form.setSaveDisable();
-                }
-        );
-
-
-        button_modifyPosition.addClickListener(click ->
-                form.setSaveEnable()
-        );
-
+                    form.setUpdateAction();
+                });
 
         button_addNewPosition.addClickListener(e -> {
-            Copy copy = main_Grid.asSingleSelect().getValue();
-            Copy newCopy = new Copy();
+            main_Grid.asSingleSelect().clear();
+            form.setSaveAction();
 
-            newCopy.setBook(copy.getBook());
-            newCopy.setSignature("");
-
-            form.setCopy(newCopy);
-            form.setSaveEnable();
         });
 
         button_Exit.addClickListener(e ->

@@ -43,7 +43,6 @@ public class AdmBookView extends VerticalLayout {
         down_Layout.setSizeFull();
 
         add(body_Layout, down_Layout, button_Exit);
-
         main_Grid.setColumns("author", "title", "releaseDate");
 
         refresh();
@@ -56,7 +55,6 @@ public class AdmBookView extends VerticalLayout {
             form.setBook(main_Grid.asSingleSelect().getValue());
             form.setUpdateAction();
         });
-
 
         button_addNewPosition.addClickListener(e -> {
             main_Grid.asSingleSelect().clear();
