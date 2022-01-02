@@ -1,5 +1,6 @@
 package library.view.admin.form;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
 import com.vaadin.flow.component.formlayout.FormLayout;
@@ -13,7 +14,6 @@ import library.dto.bookDto.BookDto;
 import library.service.BookService;
 import library.view.admin.view.AdmBookView;
 import org.springframework.context.ApplicationContext;
-
 
 
 public class BookForm extends FormLayout {
@@ -48,9 +48,15 @@ public class BookForm extends FormLayout {
 
         binder.bindInstanceFields(this);
 
-/*
-        save.addClickListener(click -> save());
-        modify.addClickListener(click -> update());
+
+        save.addClickListener(click -> {
+            try {
+                save();
+            } catch (JsonProcessingException e) {
+                e.printStackTrace();
+            }
+        });
+   /*     modify.addClickListener(click -> update());
         delete.addClickListener(click -> delete());*/
 
         VerticalLayout layout_Right =
@@ -88,16 +94,16 @@ public class BookForm extends FormLayout {
     }
 
 
-   /* private void save() {
+   private void save() throws JsonProcessingException {
 
-        Book book = binder.getBean();
+        BookDto book = binder.getBean();
         service.save(book);
         admBookView.refresh();
         setBook(book);
         setDisable();
 
     }
-
+ /*
     private void update() {
 
         Book book = binder.getBean();
