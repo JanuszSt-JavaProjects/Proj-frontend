@@ -9,7 +9,6 @@ import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.textfield.IntegerField;
 import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.data.binder.Binder;
-
 import library.dto.bookDto.BookDto;
 import library.service.BookService;
 import library.view.admin.view.AdmBookView;
@@ -56,8 +55,8 @@ public class BookForm extends FormLayout {
                 e.printStackTrace();
             }
         });
-   /*     modify.addClickListener(click -> update());
-        delete.addClickListener(click -> delete());*/
+        modify.addClickListener(click -> update());
+        delete.addClickListener(click -> delete());
 
         VerticalLayout layout_Right =
                 new VerticalLayout(title, author, releaseDate, buttons);
@@ -94,7 +93,7 @@ public class BookForm extends FormLayout {
     }
 
 
-   private void save() throws JsonProcessingException {
+    private void save() throws JsonProcessingException {
 
         BookDto book = binder.getBean();
         service.save(book);
@@ -103,10 +102,10 @@ public class BookForm extends FormLayout {
         setDisable();
 
     }
- /*
+
     private void update() {
 
-        Book book = binder.getBean();
+        BookDto book = binder.getBean();
         service.update(book);
         admBookView.refresh();
         setBook(book);
@@ -115,14 +114,15 @@ public class BookForm extends FormLayout {
 
 
     private void delete() {
-        Book book = binder.getBean();
+        BookDto book = binder.getBean();
         service.delete(book.getId());
         admBookView.refresh();
         setBook(book);
         setDisable();
     }
-*/
-    void setDisable(){
+
+
+    void setDisable() {
         setEnabled(false);
     }
 }

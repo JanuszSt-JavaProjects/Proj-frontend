@@ -20,19 +20,19 @@ import java.util.Objects;
 @Service
 @RequiredArgsConstructor
 public class BookService {
+
     private final RestTemplate restTemplate;
+
+    String route_Base = "http://localhost:8080/library/books";
 
 
     public List<BookDto> getAll() {
 
-        URI uri = setURI("library/books");
-        return Arrays.asList(Objects.requireNonNull(restTemplate.getForObject(uri, BookDto[].class)));
-
+        return Arrays.asList(Objects.requireNonNull(restTemplate.getForObject(setURI(), BookDto[].class)));
     }
 
-    public void save(BookDto bookDto) {
-        String uri = "library/books";
 
+    public void save(BookDto bookDto) {
 
         ObjectMapper mapper = new ObjectMapper();
 
@@ -40,7 +40,7 @@ public class BookService {
             String requestBody = mapper.writeValueAsString(bookDto);
             HttpClient client = HttpClient.newHttpClient();
             HttpRequest request = HttpRequest.newBuilder()
-                    .uri(URI.create("http://localhost:8080/library/books"))
+                    .uri(URI.create(route_Base))
                     .POST(HttpRequest.BodyPublishers.ofString(requestBody))
                     .header("Content-Type", "application/json")
                     .build();
@@ -54,13 +54,56 @@ public class BookService {
         } catch (InterruptedException | IOException e) {
             e.printStackTrace();
         }
-
-
     }
 
+    public BookDto update(BookDto bookDto) {
 
-    private URI setURI(String endPoint) {
-        String targetUrl = "http://localhost:8080/".concat(endPoint);
+        ObjectMapper mapper = new ObjectMapper();
+
+        try {
+            String requestBody = mapper.writeValueAsString(bookDto);
+            HttpClient client = HttpClient.newHttpClient();
+            HttpRequest request = HttpRequest.newBuilder()
+                    .uri(URI.create(route_Base))
+                    .PUT(HttpRequest.BodyPublishers.ofString(requestBody))
+                    .header("Content-Type", "application/json")
+                    .build();
+
+
+            HttpResponse<String> response = client.send(request,
+                    HttpResponse.BodyHandlers.ofString());
+
+            System.out.println(response.body());
+
+        } catch (InterruptedException | IOException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    public void delete(long id) {
+        String route_del =route_Base+"/"+id;
+
+        try {
+            HttpClient client = HttpClient.newHttpClient();
+            HttpRequest request = HttpRequest.newBuilder()
+                    .uri(URI.create(route_del))
+                    .DELETE()
+                    .header("Content-Type", "application/json")
+                    .build();
+
+            HttpResponse<String> response = client.send(request,
+                    HttpResponse.BodyHandlers.ofString());
+
+            System.out.println(response.body());
+
+        } catch (InterruptedException | IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private URI setURI() {
+        String targetUrl = route_Base;
         return UriComponentsBuilder
                 .fromHttpUrl(targetUrl)
                 .build()
