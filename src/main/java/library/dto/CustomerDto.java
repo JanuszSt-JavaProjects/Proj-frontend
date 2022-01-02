@@ -1,13 +1,14 @@
-package library.dto.customerDto;
+package library.dto;
 
 import lombok.Data;
+import lombok.Getter;
 
 import java.time.LocalDate;
 
 @Data
 public class CustomerDto {
 
-    private long clientId;
+    private long id;
     private String firstname;
     private String lastname;
     private LocalDate createAccountDate;

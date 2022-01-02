@@ -1,4 +1,3 @@
-/*
 package library.view.admin.form;
 
 import com.vaadin.flow.component.button.Button;
@@ -8,8 +7,8 @@ import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.data.binder.Binder;
-import library.backend.library.domain.Customer;
-import library.backend.library.service.CustomerService;
+import library.dto.CustomerDto;
+import library.service.CustomerService;
 import library.view.admin.view.AdmCustomerView;
 import org.springframework.context.ApplicationContext;
 
@@ -30,7 +29,7 @@ public class CustomerForm extends FormLayout {
     HorizontalLayout buttons = new HorizontalLayout(modify, save, delete);
 
 
-    private final Binder<Customer> binder = new Binder<>(Customer.class);
+    private final Binder<CustomerDto> binder = new Binder<>(CustomerDto.class);
 
 
     public CustomerForm(AdmCustomerView admCustomerView, ApplicationContext context) {
@@ -44,7 +43,6 @@ public class CustomerForm extends FormLayout {
         modify.setVisible(false);
 
         binder.bindInstanceFields(this);
-
 
         save.addClickListener(click -> save());
         modify.addClickListener(click -> update());
@@ -60,7 +58,7 @@ public class CustomerForm extends FormLayout {
 
     public void setSaveAction() {
         setEnabled(true);
-        setCustomer(new Customer());
+        setCustomer(new CustomerDto());
         modify.setVisible(false);
         save.setVisible(true);
         save.setEnabled(true);
@@ -71,46 +69,46 @@ public class CustomerForm extends FormLayout {
         save.setVisible(false);
         modify.setVisible(true);
     }
-    public void setCustomer(Customer customer) {
-        binder.setBean(customer);
 
-*/
-/*        if (customer == null) {
+    public void setCustomer(CustomerDto customerDto) {
+
+        binder.setBean(customerDto);
+        if (customerDto == null) {
             setVisible(false);
         } else {
             setVisible(true);
             firstname.focus();
-        }*//*
-
+        }
     }
 
 
     private void save() {
-        Customer customer = binder.getBean();
+        CustomerDto customer = binder.getBean();
 
         service.save(customer);
-        admCustomerView.refresh();
         setCustomer(customer);
+        admCustomerView.refresh();
         save.setEnabled(false);
     }
 
     private void update() {
 
-        Customer customer = binder.getBean();
+        CustomerDto customer = binder.getBean();
         service.update(customer);
         admCustomerView.refresh();
         setCustomer(customer);
         setDisable();
     }
+
     private void delete() {
-        Customer customer = binder.getBean();
-        service.remove(customer.getId());
+        CustomerDto customerDto = binder.getBean();
+        service.remove(customerDto.getId());
         admCustomerView.refresh();
-        setCustomer(customer);
+        setCustomer(customerDto);
         setDisable();
     }
-    void setDisable(){
+
+    void setDisable() {
         setEnabled(false);
     }
 }
-*/

@@ -1,4 +1,3 @@
-/*
 package library.view.admin.form;
 
 import com.vaadin.flow.component.button.Button;
@@ -10,12 +9,17 @@ import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.textfield.IntegerField;
 import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.data.binder.Binder;
-import library.backend.library.domain.Copy;
-import library.backend.library.domain.Status;
-import library.backend.library.service.BookService;
-import library.backend.library.service.CopyService;
+
+import library.dto.ConvertedCopyDto;
+import library.dto.CopyDto;
+import library.dto.StatusDto;
+import library.service.BookService;
+import library.service.CopyConverter;
+import library.service.CopyService;
 import library.view.admin.view.AdmCopyView;
 import org.springframework.context.ApplicationContext;
+
+import static library.dto.StatusDto.*;
 
 
 public class CopyForm extends FormLayout {
@@ -24,12 +28,14 @@ public class CopyForm extends FormLayout {
     ApplicationContext context;
     CopyService copyService;
     BookService bookService;
+    CopyConverter copyConverter;
 
 
-    private TextField book_title = new TextField("book title");
-    private TextField signature = new TextField("signature");
+
+    private IntegerField id =new IntegerField("id");
     private IntegerField bookId =new IntegerField("book Id");
-    ComboBox<Status> status = new ComboBox<>("Status");
+    private TextField signature = new TextField("signature");
+    ComboBox<StatusDto> statusDto = new ComboBox<>("Status");
 
     Button save = new Button("Save");
     Button delete = new Button("Delete");
@@ -37,25 +43,29 @@ public class CopyForm extends FormLayout {
     HorizontalLayout buttons = new HorizontalLayout(modify, save, delete);
 
 
-    private final Binder<Copy> binder = new Binder<>(Copy.class);
+    private final Binder<ConvertedCopyDto> binder = new Binder<>(ConvertedCopyDto.class);
 
 
     public CopyForm(AdmCopyView admCopyView, ApplicationContext context) {
+
+        binder.bindInstanceFields(this);
 
         this.admCopyView = admCopyView;
         this.context = context;
         copyService = context.getBean(CopyService.class);
         bookService =context.getBean(BookService.class);
+        copyConverter =context.getBean(CopyConverter.class);
 
-        status.setItems(Status.AVAILABLE, Status.IN_USE, Status.DESTROYED, Status.LOST);
-        book_title.setEnabled(false);
+        statusDto.setItems(AVAILABLE, IN_USE, DESTROYED, LOST);
+        bookId.setEnabled(false);
 
         save.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
         save.setVisible(false);
         modify.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
         modify.setVisible(false);
 
-        binder.bindInstanceFields(this);
+        id.setEnabled(false);
+
 
         save.addClickListener(click -> save());
         modify.addClickListener(click -> update());
@@ -63,9 +73,9 @@ public class CopyForm extends FormLayout {
 
         VerticalLayout layout_Right =
                 new VerticalLayout(
+                        id,
                         bookId,
-                        book_title,
-                        signature, status, buttons);
+                        signature, statusDto, buttons);
 
         add(layout_Right);
     }
@@ -73,7 +83,8 @@ public class CopyForm extends FormLayout {
 
     public void setSaveAction() {
         setEnabled(true);
-        setCopy(new Copy());
+        setCopy(new ConvertedCopyDto());
+
         modify.setVisible(false);
         save.setVisible(true);
     }
@@ -84,7 +95,7 @@ public class CopyForm extends FormLayout {
         modify.setVisible(true);
     }
 
-    public void setCopy(Copy copy) {
+    public void setCopy(ConvertedCopyDto copy) {
 
         binder.setBean(copy);
 
@@ -92,28 +103,30 @@ public class CopyForm extends FormLayout {
 
 
     private void save() {
-        Copy copy = binder.getBean();
-        copy.setBook(bookService.getOne(bookId.getValue()));
+
+        ConvertedCopyDto convertedCopyDto = binder.getBean();
+        CopyDto copy = copyConverter.convertToCopyDto(convertedCopyDto);
         copyService.save(copy);
         admCopyView.refresh();
-        setCopy(copy);
+        setCopy(convertedCopyDto);
         setDisable();
     }
 
     private void update() {
-
-        Copy copy = binder.getBean();
+        ConvertedCopyDto convertedCopyDto = binder.getBean();
+        CopyDto copy = copyConverter.convertToCopyDto(convertedCopyDto);
         copyService.update(copy);
         admCopyView.refresh();
-        setCopy(copy);
+        setCopy(convertedCopyDto);
         setDisable();
     }
 
     private void delete() {
-        Copy copy = binder.getBean();
+        ConvertedCopyDto convertedCopyDto = binder.getBean();
+        CopyDto copy = copyConverter.convertToCopyDto(convertedCopyDto);
         long id = copy.getId();
         copyService.delete(id);
-        setCopy(copy);
+        setCopy(convertedCopyDto);
         admCopyView.refresh();
     }
 
@@ -122,4 +135,3 @@ public class CopyForm extends FormLayout {
     }
 }
 
-*/

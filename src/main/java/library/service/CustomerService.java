@@ -1,8 +1,8 @@
 package library.service;
 
-
 import com.fasterxml.jackson.databind.ObjectMapper;
 import library.dto.BookDto;
+import library.dto.CustomerDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
@@ -19,24 +19,24 @@ import java.util.Objects;
 
 @Service
 @RequiredArgsConstructor
-public class BookService {
+public class CustomerService {
 
     private final RestTemplate restTemplate;
     private final ObjectMapper mapper;
 
-    String route_Base = "http://localhost:8080/library/books";
+
+    String route_Base = "http://localhost:8080/customers";
 
 
-    public List<BookDto> getAll() {
-
-        return Arrays.asList(Objects.requireNonNull(restTemplate.getForObject(setURI(), BookDto[].class)));
+    public List<CustomerDto> getAll() {
+        return Arrays.asList((restTemplate.getForObject(setURI(), CustomerDto[].class)));
     }
 
 
-    public void save(BookDto bookDto) {
-
+    public void save(CustomerDto customerDto) {
         try {
-            String requestBody = mapper.writeValueAsString(bookDto);
+            String requestBody = mapper.writeValueAsString(customerDto);
+
             HttpClient client = HttpClient.newHttpClient();
             HttpRequest request = HttpRequest.newBuilder()
                     .uri(URI.create(route_Base))
@@ -48,17 +48,16 @@ public class BookService {
             HttpResponse<String> response = client.send(request,
                     HttpResponse.BodyHandlers.ofString());
 
-            System.out.println(response.body());
 
         } catch (InterruptedException | IOException e) {
             e.printStackTrace();
         }
     }
 
-    public BookDto update(BookDto bookDto) {
-
+    public BookDto update(CustomerDto customerDto) {
         try {
-            String requestBody = mapper.writeValueAsString(bookDto);
+            String requestBody = mapper.writeValueAsString(customerDto);
+
             HttpClient client = HttpClient.newHttpClient();
             HttpRequest request = HttpRequest.newBuilder()
                     .uri(URI.create(route_Base))
@@ -70,7 +69,6 @@ public class BookService {
             HttpResponse<String> response = client.send(request,
                     HttpResponse.BodyHandlers.ofString());
 
-            System.out.println(response.body());
 
         } catch (InterruptedException | IOException e) {
             e.printStackTrace();
@@ -78,8 +76,8 @@ public class BookService {
         return null;
     }
 
-    public void delete(long id) {
-        String route_del =route_Base+"/"+id;
+    public void remove(long id) {
+        String route_del = route_Base + "/" + id;
 
         try {
             HttpClient client = HttpClient.newHttpClient();
@@ -108,3 +106,4 @@ public class BookService {
                 .toUri();
     }
 }
+

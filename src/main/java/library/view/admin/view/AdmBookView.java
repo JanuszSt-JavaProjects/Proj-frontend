@@ -7,12 +7,10 @@ import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.router.Route;
-import library.dto.bookDto.BookDto;
+import library.dto.BookDto;
 import library.service.BookService;
 import library.view.admin.form.BookForm;
 import org.springframework.context.ApplicationContext;
-
-import java.util.Collections;
 
 @Route("admin/books")
 public class AdmBookView extends VerticalLayout {

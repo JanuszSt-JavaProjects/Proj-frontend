@@ -1,4 +1,3 @@
-/*
 package library.view.admin.view;
 
 import com.vaadin.flow.component.Unit;
@@ -9,6 +8,9 @@ import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.router.Route;
 
+import library.dto.CustomerDto;
+import library.service.CustomerService;
+import library.view.admin.form.CustomerForm;
 import org.springframework.context.ApplicationContext;
 
 
@@ -17,7 +19,7 @@ import org.springframework.context.ApplicationContext;
 public class AdmCustomerView extends VerticalLayout {
 
     ApplicationContext context;
-    Grid<Customer> main_Grid = new Grid<>(Customer.class);
+    Grid<CustomerDto> main_Grid = new Grid<>(CustomerDto.class);
     CustomerService service;
 
 
@@ -46,7 +48,7 @@ public class AdmCustomerView extends VerticalLayout {
         down_Layout.setSizeFull();
 
         add(body_Layout, down_Layout, button_Exit);
-        main_Grid.setColumns("firstname", "lastname", "createAccountDate");
+        main_Grid.setColumns("id","firstname", "lastname", "createAccountDate");
 
         refresh();
         main_Grid.getColumns().forEach(col -> col.setAutoWidth(true));
@@ -54,15 +56,16 @@ public class AdmCustomerView extends VerticalLayout {
 
         main_Grid.asSingleSelect().addValueChangeListener(event ->
                 {
-                    form.setCustomer(main_Grid.asSingleSelect().getValue());
+                    CustomerDto customerDto =main_Grid.asSingleSelect().getValue();
+                    form.setCustomer(customerDto);
+
                     form.setUpdateAction();
                 }
         );
 
         button_addNewPosition.addClickListener(e -> {
-
             main_Grid.asSingleSelect().clear();
-            form.setCustomer(new Customer());
+            form.setCustomer(new CustomerDto());
             form.setSaveAction();
         });
 
@@ -80,4 +83,3 @@ public class AdmCustomerView extends VerticalLayout {
         main_Grid.setItems(service.getAll());
     }
 }
-*/

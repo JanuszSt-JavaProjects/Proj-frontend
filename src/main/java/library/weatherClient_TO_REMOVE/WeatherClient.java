@@ -2,7 +2,7 @@ package library.weatherClient_TO_REMOVE;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import library.dto.weatherDto.WeatherDto;
+import library.dto.WeatherDto;
 import org.springframework.stereotype.Service;
 import org.springframework.web.util.UriComponentsBuilder;
 

@@ -1,4 +1,3 @@
-/*
 package library.view.admin.view;
 
 import com.vaadin.flow.component.Unit;
@@ -8,17 +7,24 @@ import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.router.Route;
-import library.backend.library.domain.Copy;
-import library.backend.library.service.CopyService;
+
+import library.dto.ConvertedCopyDto;
+import library.dto.CopyDto;
+import library.service.CopyConverter;
+import library.service.CopyService;
 import library.view.admin.form.CopyForm;
 import org.springframework.context.ApplicationContext;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Route("admin/copies")
 public class AdmCopyView extends VerticalLayout {
 
     ApplicationContext context;
-    Grid<Copy> main_Grid = new Grid<>(Copy.class);
+    Grid<ConvertedCopyDto> main_Grid = new Grid<>(ConvertedCopyDto.class);
     CopyService service;
+    CopyConverter copyConverter;
 
     public AdmCopyView(ApplicationContext context) {
 
@@ -26,6 +32,7 @@ public class AdmCopyView extends VerticalLayout {
         CopyForm form = new CopyForm(this, context);
 
         service = context.getBean(CopyService.class);
+        copyConverter = context.getBean(CopyConverter.class);
 
         Button button_Exit = new Button("Menu");
         button_Exit.setMinWidth(300, Unit.PIXELS);
@@ -45,16 +52,16 @@ public class AdmCopyView extends VerticalLayout {
         down_Layout.setSizeFull();
 
         add(body_Layout, down_Layout, button_Exit);
-        main_Grid.setColumns("book.id", "book", "signature", "status");
+        main_Grid.setColumns("bookId","id", "signature", "statusDto");
 
         refresh();
         main_Grid.getColumns().forEach(col -> col.setAutoWidth(true));
 
         main_Grid.asSingleSelect().addValueChangeListener(event ->
-                {
-                    form.setCopy(main_Grid.asSingleSelect().getValue());
-                    form.setUpdateAction();
-                });
+        {
+            form.setCopy(main_Grid.asSingleSelect().getValue());
+            form.setUpdateAction();
+        });
 
         button_addNewPosition.addClickListener(e -> {
             main_Grid.asSingleSelect().clear();
@@ -70,9 +77,15 @@ public class AdmCopyView extends VerticalLayout {
     }
 
     public void refresh() {
+        List<CopyDto> input = new ArrayList<>(service.getAll());
 
-        main_Grid.setItems(service.getAll());
+        List<ConvertedCopyDto> output = new ArrayList<>();
+
+        input.forEach(x -> output.add(copyConverter.convertToConvertedCopyDto(x)));
+
+
+        main_Grid.setItems(output);
+
 
     }
 }
-*/

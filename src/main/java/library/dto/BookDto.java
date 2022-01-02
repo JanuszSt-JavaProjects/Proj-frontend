@@ -1,4 +1,4 @@
-package library.dto.bookDto;
+package library.dto;
 
 import lombok.Data;
 

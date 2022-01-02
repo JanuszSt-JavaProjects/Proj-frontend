@@ -9,7 +9,7 @@ import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.textfield.IntegerField;
 import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.data.binder.Binder;
-import library.dto.bookDto.BookDto;
+import library.dto.BookDto;
 import library.service.BookService;
 import library.view.admin.view.AdmBookView;
 import org.springframework.context.ApplicationContext;

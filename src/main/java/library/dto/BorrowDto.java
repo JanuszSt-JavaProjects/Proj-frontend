@@ -1,4 +1,4 @@
-package library.dto.borrowDto;
+package library.dto;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;

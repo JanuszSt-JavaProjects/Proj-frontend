@@ -1,8 +1,8 @@
 package library.service;
 
-
 import com.fasterxml.jackson.databind.ObjectMapper;
 import library.dto.BookDto;
+import library.dto.CopyDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
@@ -14,29 +14,36 @@ import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 
+
 @Service
 @RequiredArgsConstructor
-public class BookService {
+public class CopyService {
+
 
     private final RestTemplate restTemplate;
     private final ObjectMapper mapper;
 
-    String route_Base = "http://localhost:8080/library/books";
+    String route_Base = "http://localhost:8080/library/copies";
 
 
-    public List<BookDto> getAll() {
+    public List<CopyDto> getAll() {
 
-        return Arrays.asList(Objects.requireNonNull(restTemplate.getForObject(setURI(), BookDto[].class)));
+        CopyDto[] copies = restTemplate.getForObject(setURI(), CopyDto[].class);
+
+
+
+        return Arrays.asList(copies);
     }
 
 
-    public void save(BookDto bookDto) {
+    public void save(CopyDto copyDto) {
 
         try {
-            String requestBody = mapper.writeValueAsString(bookDto);
+            String requestBody = mapper.writeValueAsString(copyDto);
             HttpClient client = HttpClient.newHttpClient();
             HttpRequest request = HttpRequest.newBuilder()
                     .uri(URI.create(route_Base))
@@ -55,10 +62,10 @@ public class BookService {
         }
     }
 
-    public BookDto update(BookDto bookDto) {
+    public BookDto update(CopyDto copyDto) {
 
         try {
-            String requestBody = mapper.writeValueAsString(bookDto);
+            String requestBody = mapper.writeValueAsString(copyDto);
             HttpClient client = HttpClient.newHttpClient();
             HttpRequest request = HttpRequest.newBuilder()
                     .uri(URI.create(route_Base))
@@ -79,7 +86,7 @@ public class BookService {
     }
 
     public void delete(long id) {
-        String route_del =route_Base+"/"+id;
+        String route_del = route_Base + "/" + id;
 
         try {
             HttpClient client = HttpClient.newHttpClient();
@@ -108,3 +115,4 @@ public class BookService {
                 .toUri();
     }
 }
+

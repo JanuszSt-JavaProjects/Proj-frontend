@@ -13,7 +13,7 @@ import library.backend.library.domain.Book;
 import library.backend.library.mapper.BorrowMapper;
 import library.backend.library.service.BookService;
 import library.backend.library.service.BorrowService;
-import library.dto.borrowDto.BorrowDto;
+import library.dto.BorrowDto;
 
 import java.util.List;
 

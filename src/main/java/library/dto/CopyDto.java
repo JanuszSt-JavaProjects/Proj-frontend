@@ -1,11 +1,11 @@
-package library.dto.copyDto;
+package library.dto;
 
-import library.dto.statusDto.StatusDto;
 import lombok.Data;
 
 @Data
 public class CopyDto {
     private long id;
     private String signature;
-    private StatusDto statusDto;
+    private StatusDto status;
+    private long bookId;
 }
