@@ -1,0 +1,15 @@
+package library.dto.weatherDto;
+
+
+import lombok.AllArgsConstructor;
+import lombok.Data;
+
+@Data
+@AllArgsConstructor
+public class WeatherDto {
+
+    private double temp;
+    private String icon;
+    private String weather;
+
+}
