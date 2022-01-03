@@ -1,4 +1,4 @@
-package library.view;
+package library.view.nationalLibrary;
 
 import com.vaadin.flow.component.Unit;
 import com.vaadin.flow.component.button.Button;
@@ -9,10 +9,8 @@ import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.textfield.TextArea;
 import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.router.Route;
-import library.view.TEMP.NatLibBookDto;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Configuration;
-import library.view.TEMP.NatLibService;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,11 +26,6 @@ public class ReaderView extends VerticalLayout {
                       ApplicationContext applicationContext) {
         this.natLibService = natLibService;
         this.applicationContext = applicationContext;
-
-
-
-
-
 
         TextField enter_author = new TextField("Enter Author");
         TextField enter_title = new TextField("Enter title");
