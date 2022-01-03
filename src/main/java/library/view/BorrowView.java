@@ -1,4 +1,3 @@
-/*
 package library.view;
 
 
@@ -9,12 +8,13 @@ import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.textfield.IntegerField;
 import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.router.Route;
-import library.backend.library.domain.Book;
-import library.backend.library.mapper.BorrowMapper;
-import library.backend.library.service.BookService;
-import library.backend.library.service.BorrowService;
+import library.dto.BookDto;
 import library.dto.BorrowDto;
+import library.service.BookService;
+import library.service.BorrowService;
+import library.service.CopyService;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @Route("borrow")
@@ -24,18 +24,24 @@ public class BorrowView extends VerticalLayout {
     TextField find_byAuthor = new TextField("Find by Author");
     Button button_Find = new Button("Find!");
 
-    IntegerField input_Id = new IntegerField("Enter Customer Id");
-    TextField input_Lastname = new TextField("Enter Customer Lastname");
+    IntegerField book_id = new IntegerField("chosen Book Id ");
+
+    IntegerField customer_id = new IntegerField("Enter Customer Id");
     Button button_Confirm = new Button("Confirm Borrow");
     Button button_Back = new Button("Back to Menu");
 
-    Grid<Book> books_gird = new Grid<>(Book.class);
+    Grid<BookDto> books_gird = new Grid<>(BookDto.class);
     BookService bookService;
+    CopyService copyService;
+    BorrowService borrowService;
+
 
     public BorrowView(BookService bookService,
                       BorrowService borrowService,
-                      BorrowMapper borrowMapper) {
+                      CopyService copyService) {
         this.bookService = bookService;
+        this.copyService = copyService;
+        this.borrowService = borrowService;
 
         find_byAuthor.setPlaceholder("e.g.: Dan Brown");
 
@@ -46,39 +52,38 @@ public class BorrowView extends VerticalLayout {
 
 
         button_Find.addClickListener(click -> {
-                    books_gird.setItems(findBooks());
-                    find_Layout.add(input_Id, input_Lastname, button_Confirm);
+                    books_gird.setItems(findByAuth());
+                    find_Layout.add(book_id, customer_id, button_Confirm);
                 }
         );
 
-        BorrowDto borrowDto = new BorrowDto();
 
         books_gird.asSingleSelect().addValueChangeListener(event ->
                 {
-                    Book book = event.getValue();
-                    borrowDto.setBookId(book.getId());
-                    borrowDto.setCopyId(book.getCopies().get(0).getId());
+                    button_Confirm.setEnabled(true);
+                    if (books_gird.asSingleSelect().isEmpty()) {
+                        button_Confirm.setEnabled(false);
+                    } else {
+                        BookDto book = event.getValue();
+                        int id = (int) book.getId();
+                        book_id.setValue(id);
+                    }
                 }
-
         );
 
         button_Confirm.addClickListener(click ->
 
                 {
-                    borrowDto.setClientId(input_Id.getValue());
-                    borrowService.save(borrowMapper.mapBorrowDtoToBorrow(borrowDto));
+                    if (books_gird.asSingleSelect().getValue() == null) {
 
-                    button_Find.setVisible(false);
-                    input_Id.setVisible(false);
-                    input_Lastname.setVisible(false);
-                    find_byAuthor.setVisible(false);
-                    books_gird.setVisible(false);
+                        button_Confirm.setEnabled(false);
+                    } else {
 
-                    button_Confirm.setText("Done!");
-                    button_Confirm.setEnabled(false);
-                    find_Layout.add(button_Back);
-
-
+                        if(!customer_id.isEmpty()) {
+                            saveBorrow();
+                            find_Layout.add(button_Back);
+                        }
+                    }
                 }
 
         );
@@ -92,16 +97,38 @@ public class BorrowView extends VerticalLayout {
         add(find_Layout, books_gird);
     }
 
-
-    private Book setBookToBorrow(Book book) {
-        return book;
-
-    }
-
-    private List<Book> findBooks() {
+    private List<BookDto> findByAuth() {
         return bookService.getByAuthor(
                 find_byAuthor.getValue());
     }
 
+    private void saveBorrow() {
+
+        BorrowDto borrowDto = new BorrowDto();
+
+        int copyNr = copyService.getCopyNr(book_id.getValue());
+        long clientId = customer_id.getValue();
+
+        borrowDto.setBookId(book_id.getValue());
+        borrowDto.setClientId(clientId);
+        borrowDto.setCopyId(copyNr);
+        borrowDto.setBorrowDate(LocalDate.now());
+        borrowDto.setReturnDate(null);
+
+        System.out.println("BorrowView : "+ borrowDto);
+
+
+        borrowService.save(borrowDto);
+
+        book_id.setVisible(false);
+        button_Find.setVisible(false);
+        customer_id.setVisible(false);
+        find_byAuthor.setVisible(false);
+        books_gird.setVisible(false);
+
+        button_Confirm.setText("Done!");
+        button_Confirm.setEnabled(false);
+
+
+    }
 }
-*/

@@ -1,9 +1,7 @@
 package library.service;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import library.dto.BookDto;
 import library.dto.BorrowDto;
-import library.dto.ConvertedBorrowDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
@@ -36,7 +34,7 @@ public class BorrowService {
     }
 
 
-    public BorrowDto save(BorrowDto  borrowDto) {
+    public BorrowDto save(BorrowDto borrowDto) {
 
         try {
             String requestBody = mapper.writeValueAsString(borrowDto);
@@ -51,7 +49,6 @@ public class BorrowService {
             HttpResponse<String> response = client.send(request,
                     HttpResponse.BodyHandlers.ofString());
 
-            System.out.println(response.body());
 
         } catch (InterruptedException | IOException e) {
             e.printStackTrace();
@@ -73,8 +70,6 @@ public class BorrowService {
 
             HttpResponse<String> response = client.send(request,
                     HttpResponse.BodyHandlers.ofString());
-
-            System.out.println(response.body());
 
         } catch (InterruptedException | IOException e) {
             e.printStackTrace();

@@ -14,9 +14,7 @@ import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
-import java.util.Objects;
 
 
 @Service
@@ -33,7 +31,6 @@ public class CopyService {
     public List<CopyDto> getAll() {
 
         CopyDto[] copies = restTemplate.getForObject(setURI(), CopyDto[].class);
-
 
 
         return Arrays.asList(copies);
@@ -114,5 +111,30 @@ public class CopyService {
                 .encode()
                 .toUri();
     }
+
+    public int getCopyNr(long bookId) {
+        String route = route_Base + "/find-by-bookId/" + bookId;
+
+        try {
+            HttpClient client = HttpClient.newHttpClient();
+            HttpRequest request = HttpRequest.newBuilder()
+                    .uri(URI.create(route))
+                    .GET()
+                    .header("Content-Type", "application/json")
+                    .build();
+
+            HttpResponse<String> response = client.send(request,
+                    HttpResponse.BodyHandlers.ofString());
+
+
+            return Integer.parseInt(response.body());
+
+        } catch (InterruptedException | IOException e) {
+            e.printStackTrace();
+        }
+        return -1;
+    }
+
+
 }
 
