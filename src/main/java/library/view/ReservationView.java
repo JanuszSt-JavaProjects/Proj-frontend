@@ -1,4 +1,3 @@
-/*
 package library.view;
 
 import com.vaadin.flow.component.button.Button;
@@ -10,9 +9,10 @@ import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.textfield.TextArea;
 import com.vaadin.flow.router.Route;
-import library.backend.readingRoom.NationalLibrary.domain.NatLibBookDto;
-import library.backend.readingRoom.reservation.domain.Hour;
+
+import library.view.TEMP.NatLibBookDto;
 import org.springframework.context.ApplicationContext;
+import library.view.TEMP.Hour;
 
 import java.time.LocalDate;
 
@@ -67,4 +67,3 @@ public class ReservationView extends VerticalLayout {
         add(htmlComponent, secRowLayout);
     }
 }
-*/

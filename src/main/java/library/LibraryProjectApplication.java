@@ -1,6 +1,7 @@
 package library;
 
 
+import library.view.TEMP.NatLibBookDto;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.SpringBootConfiguration;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -15,13 +16,13 @@ public class LibraryProjectApplication {
         SpringApplication.run(LibraryProjectApplication.class, args);
     }
 
-    @Bean("RestTem")
+
+    @Bean("selectedBook")
+    public NatLibBookDto createBean(){
+        return new NatLibBookDto();
+    }
+    @Bean
     public RestTemplate restTemplate() {
         return new RestTemplate();
     }
-
-/*    @Bean("selectedBook")
-    public NatLibBookDto createBean(){
-        return new NatLibBookDto();
-    }*/
 }
