@@ -1,4 +1,3 @@
-/*
 package library.view.admin.view;
 
 import com.vaadin.flow.component.Unit;
@@ -8,25 +7,35 @@ import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.router.Route;
-import library.backend.library.domain.Borrow;
-import library.backend.library.service.BorrowService;
+import library.dto.BorrowDto;
+import library.dto.ConvertedBorrowDto;
+import library.dto.ConvertedCopyDto;
+import library.dto.CopyDto;
+import library.service.BorrowService;
+import library.service.converter.BorrowConverter;
 import library.view.admin.form.BorrowForm;
 import org.springframework.context.ApplicationContext;
+
+import java.util.ArrayList;
+import java.util.List;
 
 
 @Route("admin/borrows")
 public class AdmBorrowView extends VerticalLayout {
 
     ApplicationContext context;
-    Grid<Borrow> main_Grid = new Grid<>(Borrow.class);
+    Grid<ConvertedBorrowDto> main_Grid = new Grid<>(ConvertedBorrowDto.class);
     BorrowService service;
+    BorrowConverter borrowConverter;
 
     public AdmBorrowView(ApplicationContext context) {
 
         this.context = context;
+
         BorrowForm form = new BorrowForm(this, context);
 
         service = context.getBean(BorrowService.class);
+        borrowConverter = context.getBean(BorrowConverter.class);
 
         Button button_Exit = new Button("Menu");
         button_Exit.setMinWidth(300, Unit.PIXELS);
@@ -46,27 +55,30 @@ public class AdmBorrowView extends VerticalLayout {
 
         add(body_Layout, down_Layout, button_Exit);
 
-        main_Grid.setColumns("customer.firstname", "customer.lastname", "bookId", "copyId", "borrowDate", "returnDate");
+        main_Grid.setColumns(
+                "bookId",
+                "copyId",
+                "clientId",
+                "borrowDate",
+                "returnDate");
 
         refresh();
         main_Grid.getColumns().forEach(col -> col.setAutoWidth(true));
 
-
-
-
         main_Grid.asSingleSelect().addValueChangeListener(event ->
         {
 
-            Borrow borrow = main_Grid.asSingleSelect().getValue();
+            ConvertedBorrowDto borrow = main_Grid.asSingleSelect().getValue();
+            form.setEnabled(false);
             form.setBorrow(borrow);
             form.setUpdateAction();
+
         });
 
 
         button_addNewPosition.addClickListener(e -> {
-
-            form.setSaveAction();
             main_Grid.asSingleSelect().clear();
+            form.setSaveAction();
 
         });
 
@@ -80,8 +92,11 @@ public class AdmBorrowView extends VerticalLayout {
 
     public void refresh() {
 
-        main_Grid.setItems(service.getAll());
+        List<BorrowDto> input = new ArrayList<>(service.getAll());
 
+        List<ConvertedBorrowDto> output = new ArrayList<>();
+        input.forEach(x -> output.add(borrowConverter.convertToConvertedBDto(x)));
+
+        main_Grid.setItems(output);
     }
 }
-*/

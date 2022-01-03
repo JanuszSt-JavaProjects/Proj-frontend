@@ -14,13 +14,12 @@ import library.dto.ConvertedCopyDto;
 import library.dto.CopyDto;
 import library.dto.StatusDto;
 import library.service.BookService;
-import library.service.CopyConverter;
+import library.service.converter.CopyConverter;
 import library.service.CopyService;
 import library.view.admin.view.AdmCopyView;
 import org.springframework.context.ApplicationContext;
 
 import static library.dto.StatusDto.*;
-
 
 public class CopyForm extends FormLayout {
 
@@ -29,8 +28,6 @@ public class CopyForm extends FormLayout {
     CopyService copyService;
     BookService bookService;
     CopyConverter copyConverter;
-
-
 
     private IntegerField id =new IntegerField("id");
     private IntegerField bookId =new IntegerField("book Id");

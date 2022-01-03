@@ -10,7 +10,7 @@ import com.vaadin.flow.router.Route;
 
 import library.dto.ConvertedCopyDto;
 import library.dto.CopyDto;
-import library.service.CopyConverter;
+import library.service.converter.CopyConverter;
 import library.service.CopyService;
 import library.view.admin.form.CopyForm;
 import org.springframework.context.ApplicationContext;
