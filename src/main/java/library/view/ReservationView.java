@@ -1,5 +1,6 @@
 package library.view;
 
+import com.vaadin.flow.component.Unit;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.checkbox.CheckboxGroup;
 import com.vaadin.flow.component.checkbox.CheckboxGroupVariant;
@@ -42,6 +43,7 @@ public class ReservationView extends VerticalLayout {
                 orderButton
         );
 
+        confirmationTextArea.setMinWidth(500, Unit.PIXELS);
         HorizontalLayout secRowLayout = new HorizontalLayout();
         secRowLayout.add(choiceLayout, confirmationTextArea);
 
@@ -56,9 +58,9 @@ public class ReservationView extends VerticalLayout {
 
         orderButton.addClickListener(click -> {
             String message = confirmationTextArea.getValue();
-            confirmationTextArea.setValue(message + "\nYour reservation has been confirmed!" +
+            confirmationTextArea.setValue("\nYour reservation has been confirmed!\n\n" +message+"\n"+
                     "\nDate: " + datePicker.getValue() +
-                    " time: " + hoursGroup.getSelectedItems());
+                    ",      Time: " + hoursGroup.getSelectedItems());
             orderButton.setVisible(false);
             confirmationTextArea.setEnabled(false);
         });
