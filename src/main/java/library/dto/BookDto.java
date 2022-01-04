@@ -14,9 +14,9 @@ public class BookDto {
     public String toString() {
         return
                 "id: " + id +
-                ", " + title +
-                ", " + author +
-                ", " + releaseDate;
+                        ", " + title +
+                        ", " + author +
+                        ", " + releaseDate;
 
     }
 }

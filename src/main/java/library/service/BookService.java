@@ -8,7 +8,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 
-import java.awt.print.Book;
 import java.io.IOException;
 import java.net.URI;
 import java.net.http.HttpClient;
@@ -30,7 +29,7 @@ public class BookService {
 
     public List<BookDto> getAll() {
 
-        String target_URL=route_Base;
+        String target_URL = route_Base;
         return Arrays.asList(Objects.requireNonNull(
                 restTemplate.getForObject(setURI(target_URL),
                         BookDto[].class)));
@@ -83,7 +82,7 @@ public class BookService {
     }
 
     public void delete(long id) {
-        String route_del =route_Base+"/"+id;
+        String route_del = route_Base + "/" + id;
 
         try {
             HttpClient client = HttpClient.newHttpClient();
@@ -113,7 +112,7 @@ public class BookService {
 
     public List<BookDto> getByAuthor(String value) {
 
-        String target_URL=route_Base+"/byauthor?"+"name="+value;
+        String target_URL = route_Base + "/byauthor?" + "name=" + value;
         return Arrays.asList(Objects.requireNonNull(
                 restTemplate.getForObject(setURI(target_URL),
                         BookDto[].class)));
