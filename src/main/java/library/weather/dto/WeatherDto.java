@@ -1,4 +1,4 @@
-package library.dto;
+package library.weather.dto;
 
 
 import lombok.AllArgsConstructor;

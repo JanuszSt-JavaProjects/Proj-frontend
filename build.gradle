@@ -34,7 +34,9 @@ dependencies {
 
 
     // https://mvnrepository.com/artifact/com.vaadin/flow-html-components
-    implementation 'com.vaadin:flow-html-components:9.0.0'
+    implementation 'com.vaadin:flow-html-components:9.0.2'
+
+
 
 
 }
