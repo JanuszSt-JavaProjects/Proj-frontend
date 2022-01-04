@@ -13,6 +13,5 @@ public class ReservationDto {
     private int clientId;
     private OrderedBook orderedBook;
     private LocalDate date;
-    private Set<Hour> hour;
     private ReservationStatus  reservationStatus;
 }

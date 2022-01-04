@@ -29,13 +29,7 @@ public class ReservationView extends VerticalLayout {
 
         DatePicker datePicker = new DatePicker("Schedule Your visit!", LocalDate.now().plusDays(1));
 
-        CheckboxGroup<String> hoursGroup = new CheckboxGroup<>();
-        hoursGroup.setLabel("Choose hours");
-        hoursGroup.setItems(Hour.HOUR_10_11.getName(),
-                Hour.HOUR_11_12.getName(),
-                Hour.HOUR_12_13.getName(),
-                Hour.HOUR_13_14.getName());
-        hoursGroup.addThemeVariants(CheckboxGroupVariant.LUMO_VERTICAL);
+
 
         TextArea confirmationTextArea = new TextArea();
         Button orderButton = new Button("Reserve!");
@@ -47,7 +41,6 @@ public class ReservationView extends VerticalLayout {
         choiceLayout.add(
                 clId,
                 datePicker,
-                hoursGroup,
                 orderButton
         );
 
@@ -67,8 +60,7 @@ public class ReservationView extends VerticalLayout {
         orderButton.addClickListener(click -> {
             String message = confirmationTextArea.getValue();
             confirmationTextArea.setValue(message + "\nYour reservation has been confirmed!" +
-                    "\nDate: " + datePicker.getValue() +
-                    " time: " + hoursGroup.getSelectedItems());
+                    "\nDate: " + datePicker.getValue());
             orderButton.setVisible(false);
             confirmationTextArea.setEnabled(false);
         });
@@ -90,11 +82,7 @@ public class ReservationView extends VerticalLayout {
             confirmationTextArea.setValue("\nYour reservation has been confirmed!\n\n" + message);
             orderButton.setVisible(false);
             confirmationTextArea.setEnabled(false);
-
-
-            Set<Hour> hours = new HashSet<>();
-            for (String x : hoursGroup.getSelectedItems())
-                hours.add(Hour.byName(x));
+            
 
             ReservationDto reservationDto =
                     ReservationDto.builder()
@@ -102,7 +90,6 @@ public class ReservationView extends VerticalLayout {
                             .clientId(clId.getValue())
                             .orderedBook(orderedBook)
                             .date(datePicker.getValue())
-                            .hour(hours)
                             .reservationStatus(ReservationStatus.RESERVED)
                             .build();
 
